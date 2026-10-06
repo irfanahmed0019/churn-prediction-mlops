@@ -1,6 +1,7 @@
 """Train and compare models with stratified CV, pick the best on CV PR-AUC,
 evaluate once on a held-out test set, and save model + metrics + plots."""
 import json
+import os
 import joblib
 import matplotlib
 matplotlib.use("Agg")
@@ -39,6 +40,8 @@ def candidates(X):
 
 
 def main():
+    os.makedirs("models", exist_ok=True)
+    os.makedirs("reports", exist_ok=True)
     X, y = load()
     Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.2, stratify=y, random_state=SEED)
     cv = StratifiedKFold(5, shuffle=True, random_state=SEED)
